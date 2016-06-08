@@ -50,10 +50,6 @@ public class Webview extends TiUIView
 	public static class ContentWrapperFragment extends Fragment {
 		View mContentView;
 
-		public ContentWrapperFragment(View cv) {
-			mContentView = cv;
-		}
-
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			int layout_content_fragment = 0;
@@ -71,6 +67,10 @@ public class Webview extends TiUIView
 			v.addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			return view;
 		}
+
+		public void setContentWrapperView(View cv) {
+			mContentView = cv;
+		}
 	}
 	
 	private void replaceCenterView(TiViewProxy viewProxy) {
@@ -84,7 +84,9 @@ public class Webview extends TiUIView
 
 		// update the main content by replacing fragments
 		View contentView = viewProxy.getOrCreateView().getOuterView();
-		Fragment fragment = new ContentWrapperFragment(contentView);
+
+		ContentWrapperFragment fragment = new ContentWrapperFragment();
+		fragment.setContentWrapperView(contentView);
 
 		FragmentManager fragmentManager = (proxy.getActivity()).getFragmentManager();
 		fragmentManager.beginTransaction().replace(id_content_frame, fragment).commit();
