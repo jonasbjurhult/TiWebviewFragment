@@ -64,12 +64,30 @@ public class Webview extends TiUIView
 
 			View view = inflater.inflate(layout_content_fragment, container, false);
 			FrameLayout v = (FrameLayout) view.findViewById(id_content_frame);
-			v.addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			if (mContentView != null) {
+				v.addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			}
 			return view;
 		}
 
 		public void setContentWrapperView(View cv) {
 			mContentView = cv;
+
+			View view = getView();
+
+			if (view != null) {
+				int id_content_frame = 0;
+
+				try {
+					id_content_frame = TiRHelper.getResource("id.content_frame");
+				}
+				catch (ResourceNotFoundException e) {
+					Log.e("WEBVIEW", "XML resources could not be found!");
+				}
+				FrameLayout v = (FrameLayout) view.findViewById(id_content_frame);
+
+				v.addView(mContentView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			}
 		}
 	}
 	
